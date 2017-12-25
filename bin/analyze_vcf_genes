@@ -1,0 +1,43 @@
+#! /usr/bin/env python
+
+from __future__ import absolute_import, division, print_function
+
+import os
+import argparse
+
+import pandas as pd
+
+from fabric import Setup, analyze_vcf_genes
+from fabric.util import TimeMeasure
+from fabric.common_args import get_parser_file_type, get_parser_directory_type, get_common_args
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description = 'Run a full analysis on a VCF-derived dataset (the CSV output of the create_vcf_dataset script), ' + \
+            'calculating the alteration bias in each gene independently.', parents = [get_common_args()])
+    parser.add_argument('--input-csv-file', dest = 'input_csv_file', metavar = '/path/to/input_file.csv', type = get_parser_file_type(parser, \
+            must_exist = True), required = True, help = 'Path to the VCF-derived dataset .csv input file (the CSV output of the create_vcf_dataset script).')
+    parser.add_argument('--gene-bg-scores-dir', dest = 'gene_bg_scores_dir', metavar = '/path/to/gene_bg_scores_dir', \
+            type = get_parser_directory_type(parser), required = True, help = 'Path to the directory of the gene background scores (after running the ' + \
+            'script set_gene_bg_scores for the relevant reference genome).')
+    parser.add_argument('--output-csv-file', dest = 'output_csv_file', metavar = '/path/to/output_file.csv', type = get_parser_file_type(parser), \
+            required = True, help = 'Path to the CSV output file where the analysis output will be saved.')
+    parser.add_argument('--override', dest = 'override', action = 'store_true', help = 'Override the output file if it already exists.')
+    parser.add_argument('--only-gene-indices', dest = 'only_gene_indices', metavar = '[<index1>, <index2>, ...]', nargs = '+', type = int, \
+            help = 'Limit the analysis only to the provided genes (identified by their index according to the gene dataset file). If not provided, will ' + \
+            'analyze all genes.')
+    args = parser.parse_args()
+    
+    if not args.override and os.path.exists(args.output_csv_file):
+        parser.error(('Output file already exists: %s' % args.output_csv_file) + '\n' + 'Use the --override flag if you want to override it.')
+
+    setup = Setup(args.ref_genome, gene_dataset_dir = args.gene_dataset_dir)
+    
+    with TimeMeasure('Parsing SNP dataset...'):
+        snps = pd.read_csv(args.input_csv_file)
+        snps['effect_scores'] = snps['effect_scores'].apply(eval)
+    
+    results = analyze_vcf_genes(setup, args.gene_bg_scores_dir, snps, gene_indices_to_analyze = args.only_gene_indices)
+    results.to_csv(args.output_csv_file)
+    
+    print('Done.')

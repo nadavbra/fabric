@@ -1,0 +1,28 @@
+#! /usr/bin/env python
+
+from __future__ import absolute_import, division, print_function
+
+import argparse
+
+from fabric import Setup, set_gene_bg_scores
+from fabric.common_args import get_parser_directory_type, get_common_args, create_thread_pool
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description = 'Set background scores for all human genes.', parents = [get_common_args(n_threads = True)])
+    parser.add_argument('--gene-bg-scores-dir', dest = 'gene_bg_scores_dir', metavar = '/path/to/gene_bg_scores_dir', \
+            type = get_parser_directory_type(parser), required = True, help = 'Path to the directory of the gene background scores, ' + \
+            'where the result files will be saved (within the directory of the proper reference genome).')
+    parser.add_argument('--override', dest = 'override', action = 'store_true', help = \
+            'Whether to recalculate and override the background scores for genes with existing results, or to skip them.')
+    args = parser.parse_args()
+    
+    n_threads, thread_pool = create_thread_pool(args)
+    
+    try:
+        setup = Setup(args.ref_genome, gene_dataset_dir = args.gene_dataset_dir, thread_pool = thread_pool, n_threads = n_threads)
+        set_gene_bg_scores(setup, args.gene_bg_scores_dir, override = args.override)
+    finally:
+        thread_pool.close()
+
+    print('Done.')

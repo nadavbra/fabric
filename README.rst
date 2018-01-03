@@ -2,7 +2,9 @@ What is FABRIC?
 --------
 
 FABRIC (Functional Alteration Bias Recovery In Coding-regions) is a framework for detecting genes showing functional alteration bias in some evolutionary context. For example, in the context of cancer genomics it can be used to detect alteration promoting genes (namely genes affected by mutations that are significantly more harmful than expected at random). Cancer alteration promoting genes are strong candidates for cancer driver genes. Likewise, in the context of population genetic variation it can be used to detect alteration rejecting genes (namely genes affected by variants that are significantly less harmful than expected at random). Such genes are likely the product of negative selection, and are expected to harbor important functions.
+
 The framework relies on a machine-learning prediction model for assessing the functional impact of genetic variants. Currently, it is coupled with FIRM (https://github.com/nadavbra/firm), a specific prediction model designed exactly for that task. However, it should be relatively easy to expand the module to other models as well. Note that while in FIRM a score of 0 indicates a harmless mutation and a score of 1 indicates a harmful mutation, in FABRIC it is the other way around.
+
 Importantly, FABRIC is not sensitive (in terms of false discoveries) to the accuracy of the underlying prediction model, as it relies on precise statistical calculations. Specifically, it compares each gene's observed effect scores (calculated by applying the prediction model over the observed mutations in the gene) to its gene-specific background effect score distribution expected at random (calculated by applying the same prediction model over all possible mutations in the gene).
 
 
@@ -27,6 +29,8 @@ set_gene_bg_scores --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ -
 
 This will create the directory ~/fabric_data/gene_bg_scores/GRCh38/ and fill it with JSON files (one for each gene, identified by its UniProt ID) containing the background effect scores of all analyzed genes. 
 Note that this should be a very lengthy process, so it is recommended to run it in the background, and to use a machine with many CPUs. 
+
+**Important note**: You can actually spare this very long process by using pre-calculated background effect score distributions that are available via FTP at: ftp://ftp.cs.huji.ac.il/users/nadavb/fabric_data/. For a particular version of the human reference genome, you will need to get the file genes_<version>.csv and put it in your gene dataset directory (e.g. ~/fabric_data/), and also the file gene_bg_scores/<version>.tar.gz that you will need to extract into your gene background scores directory (e.g. for ~/fabric_data/gene_bg_scores/ you will need to end up with the JSON files inside the directory ~/fabric_data/gene_bg_scores/<version>/).
 
 
 Analyzing cancer data (MAF format)

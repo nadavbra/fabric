@@ -1,5 +1,5 @@
 What is FABRIC?
---------
+===============
 
 FABRIC (Functional Alteration Bias Recovery In Coding-regions) is a framework for detecting genes showing functional alteration bias in some evolutionary context. For example, in the context of cancer genomics it can be used to detect alteration promoting genes (namely genes affected by mutations that are significantly more harmful than expected at random). Cancer alteration promoting genes are strong candidates for cancer driver genes. Likewise, in the context of population genetic variation it can be used to detect alteration rejecting genes (namely genes affected by variants that are significantly less harmful than expected at random). Such genes are likely the product of negative selection, and are expected to harbor important functions.
 
@@ -9,10 +9,10 @@ Importantly, FABRIC is not sensitive (in terms of false discoveries) to the accu
 
 
 Usage
---------
+=====
 
 Preparation
-___
+-----------
 
 After installtion (see below), you will need to prepare the background effect score distributions for all the protein-coding genes in the version of the human reference genome you plan to work with (GRCh38 or hg19). This is done by running the following command:
 
@@ -34,7 +34,7 @@ Note that this should be a very lengthy process, so it is recommended to run it 
 
 
 Analyzing cancer data (MAF format)
-___
+----------------------------------
 
 FABRIC can be easily used to analyze mutations provided in the MAF format. 
 
@@ -93,7 +93,7 @@ When finished, the directory ~/tcga_and_exac_analysis/gdc_results/ will be creat
 
 
 Analyzing genetic variation (VCF format)
-___
+----------------------------------------
 
 In addition to MAF format, FABRIC can also process a list of variants given in VCF format. 
 
@@ -142,13 +142,13 @@ When finished, the file ~/tcga_and_exac_analysis/exac_results.csv will be create
 
 
 Analyzing other types of data
-___
+-----------------------------
 
 FABRIC is currently equipped with commandline scripts for processing data provided only in the MAF or VCF format. However, the API provided by the fabric Python module is quite generic, and can be used to write your own custom code to handle any kind of data. 
 
 
 Installation
---------
+============
 
 Dependencies:
 
@@ -168,7 +168,7 @@ To install, just run:
 
 
 Replicating the entire TCGA and ExAC analysis in our publication
---------
+================================================================
 
 (only for advanced users interested in in-depth understanding of the framework)
 

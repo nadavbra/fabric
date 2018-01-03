@@ -16,7 +16,7 @@ Preparation
 
 After installtion (see below), you will need to prepare the background effect score distributions for all the protein-coding genes in the version of the human reference genome you plan to work with (GRCh38 or hg19). This is done by running the following command:
 
-set_gene_bg_scores --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --gene-bg-scores-dir=<DIR PATH>
+        set_gene_bg_scores --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --gene-bg-scores-dir=<DIR PATH>
 
 Where:
 
@@ -25,7 +25,7 @@ Where:
 
 For example, if you work with GRCh38 and your working directory is ~/fabric_data, you will run the command:
 
-set_gene_bg_scores --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ --gene-bg-scores-dir=~/fabric_data/gene_bg_scores/
+        set_gene_bg_scores --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ --gene-bg-scores-dir=~/fabric_data/gene_bg_scores/
 
 
 This will create the directory ~/fabric_data/gene_bg_scores/GRCh38/ and fill it with JSON files (one for each gene, identified by its UniProt ID) containing the background effect scores of all analyzed genes. 
@@ -61,7 +61,7 @@ FABRIC accepts as a valid MAF file any tab-delimited file with the following hea
 
 First, FABRIC needs to calculate the effect scores of all the mutations in your MAF file. This is done by running the following command:
 
-set_maf_gene_effect_scores --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --maf-file=<FILE PATH> --effect-scores-output-csv-file=<FILE PATH>
+        set_maf_gene_effect_scores --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --maf-file=<FILE PATH> --effect-scores-output-csv-file=<FILE PATH>
 
 Where:
 
@@ -71,7 +71,7 @@ Where:
 
 For example, if you want to analyze the TCGA dataset obtained above (gdc_combined.maf), assuming your working directory is ~/tcga_and_exac_analysis, you will run the command: 
 
-set_maf_gene_effect_scores --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ --maf-file=~/tcga_and_exac_analysis/gdc_combined.maf --effect-scores-output-csv-file=~/tcga_and_exac_analysis/gdc_effect_scores.csv
+        set_maf_gene_effect_scores --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ --maf-file=~/tcga_and_exac_analysis/gdc_combined.maf --effect-scores-output-csv-file=~/tcga_and_exac_analysis/gdc_effect_scores.csv
 
 The reference genome GRCh38 is provided because that's the version used by TCGA.
 When finished, the file ~/tcga_and_exac_analysis/gdc_effect_scores.csv will be created with the effect scores of all the relevant mutations in gdc_combined.maf.
@@ -83,7 +83,7 @@ Note that when analyzing millions of mutations, this can be a pretty lengthy pro
 
 After all the preparations are finished (the background and observed effect scores have been calculated), you are ready to run the actual analysis. This is done by running the following command:
 
-analyze_maf_genes --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --maf-file=<FILE PATH> --effect-scores-csv-file=<FILE PATH> --gene-bg-scores-dir=<DIR PATH> --output-dir=<DIR PATH> [--only-combined] [--analyze-diff]
+        analyze_maf_genes --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --maf-file=<FILE PATH> --effect-scores-csv-file=<FILE PATH> --gene-bg-scores-dir=<DIR PATH> --output-dir=<DIR PATH> [--only-combined] [--analyze-diff]
 
 Where:
 
@@ -93,7 +93,7 @@ Where:
 
 For example, to keep working on the TCGA dataset, you will run the command: 
 
-analyze_maf_genes --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ --maf-file=~/tcga_and_exac_analysis/gdc_combined.maf --effect-scores-csv-file=~/tcga_and_exac_analysis/gdc_effect_scores.csv --gene-bg-scores-dir=~/fabric_data/gene_bg_scores/ --output-dir=~/tcga_and_exac_analysis/gdc_results/ --analyze-diff
+        analyze_maf_genes --reference-genome=GRCh38 --gene-dataset-dir=~/fabric_data/ --maf-file=~/tcga_and_exac_analysis/gdc_combined.maf --effect-scores-csv-file=~/tcga_and_exac_analysis/gdc_effect_scores.csv --gene-bg-scores-dir=~/fabric_data/gene_bg_scores/ --output-dir=~/tcga_and_exac_analysis/gdc_results/ --analyze-diff
 
 When finished, the directory ~/tcga_and_exac_analysis/gdc_results/ will be created and filled with the analysis results. A CSV file with the results of all analyzed genes will be created for each TCGA project (cancer-type), and another CSV (combined.csv) for the combined (pan-cancer) analysis. Since you also provided the --analyze-diff flag, a diff.csv file will be created as well.
 
@@ -111,7 +111,7 @@ ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/ExAC.r1.sites.vep.vcf.gz
 
 First, FABRIC needs to parse the VCF file, and to calculate the effect scores of all the relevant variants in it. This is done by running the following command:
 
-create_vcf_dataset --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --vcf-file=<FILE PATH> --output-csv-file=<FILE PATH> [--only-pass]
+        create_vcf_dataset --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --vcf-file=<FILE PATH> --output-csv-file=<FILE PATH> [--only-pass]
 
 Where:
 
@@ -122,7 +122,7 @@ Where:
 
 For example, if you want to analyze the ExAC dataset obtained above (ExAC.r1.sites.vep.vcf.gz), assuming your working directory is ~/tcga_and_exac_analysis, you will run the command: 
 
-create_vcf_dataset --reference-genome=hg19 --gene-dataset-dir=~/fabric_data/ --vcf-file=~/tcga_and_exac_analysis/ExAC.r1.sites.vep.vcf.gz --output-csv-file=~/tcga_and_exac_analysis/exac_variants.csv --only-pass
+        create_vcf_dataset --reference-genome=hg19 --gene-dataset-dir=~/fabric_data/ --vcf-file=~/tcga_and_exac_analysis/ExAC.r1.sites.vep.vcf.gz --output-csv-file=~/tcga_and_exac_analysis/exac_variants.csv --only-pass
 
 The reference genome hg19 is provided because that's the version used by ExAC (ExAC's VCF headers contains: assembly=GRCh37.p13).
 When finished, the file ~/tcga_and_exac_analysis/exac_variants.csv will be created with the processed dataset.
@@ -134,7 +134,7 @@ Note that when analyzing millions of variants, this can be a pretty lengthy proc
 
 After all the background and observed effect scores have been calculated, you are ready to run the actual analysis. This is done by running the following command:
 
-analyze_vcf_genes --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --input-csv-file=<FILE PATH> --gene-bg-scores-dir=<DIR PATH> --output-csv-file=<FILE PATH>
+        analyze_vcf_genes --reference-genome=<GRCh38 or hg19> --gene-dataset-dir=<DIR PATH> --input-csv-file=<FILE PATH> --gene-bg-scores-dir=<DIR PATH> --output-csv-file=<FILE PATH>
 
 Where:
 
@@ -144,7 +144,7 @@ Where:
 
 For example, to keep working on the ExAC dataset, you will run the command: 
 
-analyze_vcf_genes --reference-genome=hg19 --gene-dataset-dir=~/fabric_data/ --input-csv-file=~/tcga_and_exac_analysis/exac_variants.csv --gene-bg-scores-dir=~/fabric_data/gene_bg_scores/ --output-csv-file=~/tcga_and_exac_analysis/exac_results.csv
+        analyze_vcf_genes --reference-genome=hg19 --gene-dataset-dir=~/fabric_data/ --input-csv-file=~/tcga_and_exac_analysis/exac_variants.csv --gene-bg-scores-dir=~/fabric_data/gene_bg_scores/ --output-csv-file=~/tcga_and_exac_analysis/exac_results.csv
 
 When finished, the file ~/tcga_and_exac_analysis/exac_results.csv will be created with the results of all analyzed genes.
 

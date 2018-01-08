@@ -7,6 +7,9 @@ The framework relies on a machine-learning prediction model for assessing the fu
 
 Importantly, FABRIC is not sensitive (in terms of false discoveries) to the accuracy of the underlying prediction model, as it relies on precise statistical calculations. Specifically, it compares each gene's observed effect scores (calculated by applying the prediction model over the observed mutations in the gene) to its gene-specific background effect score distribution expected at random (calculated by applying the same prediction model over all possible mutations in the gene).
 
+If you use FABRIC in work contributing to a scientific publication, we ask that you cite our publication:
+Nadav Brandes, Nathan Linial, Michal Linial. Modeling Functional Genetic Alteration in Cancer Reveals New Candidate Driver Genes. https://doi.org/10.1101/242354
+
 
 Usage
 =====

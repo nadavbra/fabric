@@ -43,7 +43,6 @@ if __name__ == '__main__':
                 variants_df = extract_variants(f, only_pass = args.only_pass, min_AF = args.min_AF)
         
         snps_df = filter_snps(variants_df)
-        snps_df = snps_df.iloc[:10000] # XXX
         
         with TimeMeasure('Processing %d SNPs...' % len(snps_df)):
             snps_series = process_snps(snps_df, setup)

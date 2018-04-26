@@ -169,7 +169,7 @@ Dependencies:
 * biopython
 * scikit-learn
 * statsmodels
-* geneffect (https://github.com/nadavbra/geneffect)
+* geneffect (https://github.com/nadavbra/geneffect) - version 1.1 (not the newest)
 * firm (https://github.com/nadavbra/firm)
 
 

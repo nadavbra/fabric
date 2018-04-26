@@ -30,7 +30,7 @@ setup(
         'biopython',
         'scikit-learn',
         'statsmodels',
-        'geneffect', # https://github.com/nadavbra/geneffect
+        'geneffect==1.1', # https://github.com/nadavbra/geneffect
         'firm', # https://github.com/nadavbra/firm
     ],
 )

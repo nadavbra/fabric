@@ -20,7 +20,7 @@ def extract_variants(vcf_file_handler, only_pass = False, min_AF = 0, verbose = 
             headers = line[1:].strip().split('\t')
         else:
             
-            AFs = np.array(map(float, _AF_PATTERN.search(line).group(1).split(',')))
+            AFs = np.array(list(map(float, _AF_PATTERN.search(line).group(1).split(','))))
             AF_mask = (AFs >= min_AF)
             
             if AF_mask.any():

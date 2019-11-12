@@ -3,24 +3,21 @@
 from __future__ import absolute_import, division, print_function
 
 import os
-import gzip
 import argparse
+
+import pandas as pd
 
 from fabric import Setup, calc_effect_scores_of_snps
 from fabric.util import TimeMeasure
 from fabric.common_args import get_parser_file_type, get_common_args, create_thread_pool
-from fabric.vcf_processing import extract_variants, filter_snps, process_snps
+from fabric.vcf_processing import filter_snps, process_snps
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description = 'Create a dataset of SNPs (with effect scores) from a VCF file.', parents = \
-            [get_common_args(n_threads = True)])
-    parser.add_argument('--vcf-file', dest = 'vcf_file_path', metavar = '/path/to/file.vcf[.gz]', type = get_parser_file_type(parser, must_exist = True), \
-            required = True, help = 'Path to the .vcf[.gz] input file with the variants to process and calculate the effect scores for.')
-    parser.add_argument('--only-pass', dest = 'only_pass', action = 'store_true', help = 'Filter out variants with a FILTER VCF field that ' + \
-            'is different than "pass".')
-    parser.add_argument('--min-AF', dest = 'min_AF', metavar = '<0-1 number>', type = float, default = 0, \
-            help = 'Take only variants in the VCF with an Allele Frequency (AF) that is greater or higher than this number. Default is 0 (i.e. no filter).')
+    parser = argparse.ArgumentParser(description = 'Create a dataset of SNPs (with effect scores) from a CSV file containing the ' + \
+            'same information as a VCF file.', parents = [get_common_args(n_threads = True)])
+    parser.add_argument('--csv-file', dest = 'csv_file_path', metavar = '/path/to/file.csv[.gz]', type = get_parser_file_type(parser, must_exist = True), \
+            required = True, help = 'Path to the .csv[.gz] input file with the variants to calculate the effect scores for.')
     parser.add_argument('--output-csv-file', dest = 'output_csv_file', metavar = '/path/to/output_file.csv', type = get_parser_file_type(parser), \
             required = True, help = 'Path to the CSV output file where the created dataset will be saved.')
     parser.add_argument('--override', dest = 'override', action = 'store_true', help = 'Override the output file if it already exists.')
@@ -35,12 +32,9 @@ if __name__ == '__main__':
         
         setup = Setup(args.ref_genome, gene_dataset_dir = args.gene_dataset_dir, thread_pool = thread_pool, n_threads = n_threads)
         
-        with TimeMeasure('Parsing VCF variants...'):
-        
-            vcf_open_function = gzip.open if args.vcf_file_path.endswith('.gz') else open
-        
-            with vcf_open_function(args.vcf_file_path, 'rt') as f:
-                variants_df = extract_variants(f, only_pass = args.only_pass, min_AF = args.min_AF)
+        with TimeMeasure('Reading variants...'):
+            variants_df = pd.read_csv(args.csv_file_path).rename(columns = lambda column_name: column_name.lower())
+            variants_df['chrom'] = variants_df['chrom'].astype(str)
         
         snps_df = filter_snps(variants_df)
         

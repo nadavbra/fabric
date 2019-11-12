@@ -47,7 +47,7 @@ def _extract_gene_effects(snps_series, uniprot_id_to_gene_index):
 
     for snp_index, snp in snps_series.iteritems():
         if pd.notnull(snp):
-            for gene_effect in snp.gene_effects:
+            for gene_effect in snp.cds_gene_effects:
                 gene_index = uniprot_id_to_gene_index[gene_effect.affected_gene.uniprot_record.id]
                 gene_effects.append(gene_effect)
                 gene_effects_meta_data.append((snp_index, gene_index))

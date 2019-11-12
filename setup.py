@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name = 'fabric',
-    version = '1.0',
+    version = '1.1.0',
     description = 'FABRIC (Functional Alteration Bias Recovery In Coding-regions) is a framework for detecting genes showing functional alteration bias.',
     long_description = readme(),
     url = 'https://github.com/nadavbra/fabric',
@@ -30,7 +30,7 @@ setup(
         'biopython',
         'scikit-learn',
         'statsmodels',
-        'geneffect==1.1', # https://github.com/nadavbra/geneffect
+        'geneffect', # https://github.com/nadavbra/geneffect
         'firm', # https://github.com/nadavbra/firm
     ],
 )

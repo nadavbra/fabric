@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function
 import os
 import json
 
-from geneffect.variant_processing import build_snp_gene_effect
+from geneffect.variant_processing import SnpCDSGeneEffect, VariantAtTheEndOfInvalidGeneException
 
 from .util import ALL_NTS_SET, log, get_strand_sequence
 
@@ -78,13 +78,13 @@ class _GeneAnalysis(object):
                 positive_strand_ref_nt = str(get_strand_sequence(cds_ref_nt, cds_exon.strand))
                 
                 for cds_alt_nt in (ALL_NTS_SET - set(cds_ref_nt)):
-                    
-                    positive_strand_alt_nt = str(get_strand_sequence(cds_alt_nt, cds_exon.strand))
-                    substitution = (positive_strand_ref_nt, positive_strand_alt_nt)
-                    gene_effect = build_snp_gene_effect(self.gene, cds_exon, cds_coordinate, cds_ref_nt, cds_alt_nt)
-                    
-                    if gene_effect is not None:
+                    try:
+                        positive_strand_alt_nt = str(get_strand_sequence(cds_alt_nt, cds_exon.strand))
+                        substitution = (positive_strand_ref_nt, positive_strand_alt_nt)
+                        gene_effect = SnpCDSGeneEffect(self.gene, cds_exon, cds_coordinate, cds_ref_nt, cds_alt_nt)
                         self.substitution_analyses[substitution].gene_effects.append(gene_effect)
+                    except VariantAtTheEndOfInvalidGeneException:
+                        continue
             
 class _SubstitutionAnalysis(object):
     

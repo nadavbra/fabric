@@ -77,7 +77,7 @@ def calc_right_tail_binning_pval(obs_scores, bg_score_dist, only_missense, n_bin
     
 def iid_sum_bins(bins, n, max_bin = None):
     
-    n_as_bits = map(int, bin(n)[2:][::-1])
+    n_as_bits = list(map(int, bin(n)[2:][::-1]))
     
     if n_as_bits[0] == 1:
         sum_bins = bins

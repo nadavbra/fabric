@@ -34,7 +34,7 @@ For example, if you work with GRCh38 and your working directory is ~/fabric_data
 This will create the directory ~/fabric_data/gene_bg_scores/GRCh38/ and fill it with JSON files (one for each gene, identified by its UniProt ID) containing the background effect scores of all analyzed genes. 
 Note that this should be a very lengthy process, so it is recommended to run it in the background, and to use a machine with many CPUs. 
 
-**Important note**: You can actually spare this very long process by using pre-calculated background effect score distributions that are available via FTP at: ftp://ftp.cs.huji.ac.il/users/nadavb/fabric_data/. For a particular version of the human reference genome, you will need to get the file genes_<version>.csv and put it in your gene dataset directory (e.g. ~/fabric_data/), and also the file gene_bg_scores/<version>.tar.gz that you will need to extract into your gene background scores directory (e.g. for ~/fabric_data/gene_bg_scores/ you will need to end up with the JSON files inside the directory ~/fabric_data/gene_bg_scores/<version>/). If you use these pre-calculated scores, you will also need to make sure that geneffect works with the same gene annotations that created these files, so you will need to work with somewhat older versions of GENCODE, genenames and UniProt that are found in the data/ subdirectory at this FTP site (refer to your geneffect's configuration file, typically found at ~/.geneffect_config.py, for instructions where to update these data files).
+**Important note**: You can actually spare this very long process by using pre-calculated background effect score distributions that are available via FTP at: ftp://ftp.cs.huji.ac.il/users/nadavb/fabric_data/. For a particular version of the human reference genome, you will need to get the file genes_<version>.csv and put it in your gene dataset directory (e.g. ~/fabric_data/), and also the file gene_bg_scores/<version>.tar.gz that you will need to extract into your gene background scores directory (e.g. for ~/fabric_data/gene_bg_scores/ you will need to end up with the JSON files inside the directory ~/fabric_data/gene_bg_scores/<version>/). If you use these pre-calculated scores, you will also need to make sure that geneffect works with the same gene annotations that created these files, so you will need to work with somewhat older versions of genenames and UniProt that are found in the data/ subdirectory at this FTP site (refer to your geneffect's configuration file, typically found at ~/.geneffect_config.py, for instructions where to update these data files). **It is absolutely crucial to make sure that geneffect and firm are configured in the exact same way they were configured when these effect scores were originally calculated, or else you may end up with false positives. Therefore, if you choose to use the pre-calculated scores, it is highly recommended that you install fabric using the automatic installation script (see below).**
 
 
 Analyzing cancer data (MAF format)
@@ -173,7 +173,21 @@ Dependencies:
 * firm (https://github.com/nadavbra/firm)
 
 
-To install, just run:
+Automatic installation (using the installation script)
+----------
+
+    >>> wget https://raw.githubusercontent.com/nadavbra/fabric/master/install_fabric.sh
+    >>> chmod a+x install_fabric.sh
+    >>> ./install_fabric.sh
+    
+And follow the script's instructions.
+    
+    
+Manual installation
+----------
+
+Make sure that geneffect and firm are properly installed and configured.
+
+Clone the project and run:
 
     python setup.py install
-

@@ -53,7 +53,7 @@ class Setup(object):
         return gene_dataset
         
     def _create_gene_dataset(self):
-        return pd.DataFrame(map(_create_gene_record, self.geneffect_setup.genes), columns = ['uniprot_id', 'symbol', 'name', 'refseq_ids', \
+        return pd.DataFrame(list(map(_create_gene_record, self.geneffect_setup.genes)), columns = ['uniprot_id', 'symbol', 'name', 'refseq_ids', \
                 'chr', 'cds_start', 'cds_end'])
         
 def _create_gene_record(gene):

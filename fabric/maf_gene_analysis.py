@@ -81,7 +81,9 @@ def analyze_maf_genes(setup, gene_bg_scores_dir, mutations, only_combined_projec
                 
         results_per_project[project] = pd.DataFrame(project_gene_results, index = project_analyzed_gene_indices)
           
-    results_per_project['diff'] = results_per_project['diff'][pd.notnull(results_per_project['diff']).any(axis = 1)]
+    if analyze_diff:
+        results_per_project['diff'] = results_per_project['diff'][pd.notnull(results_per_project['diff']).any(axis = 1)]
+    
     return results_per_project
 
 def get_effect_scores_and_nt_substitution_counts_per_gene_per_project(mutations, only_combined_project = False):

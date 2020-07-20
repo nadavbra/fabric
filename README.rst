@@ -7,8 +7,12 @@ The framework relies on a machine-learning prediction model for assessing the fu
 
 Importantly, FABRIC is not sensitive (in terms of false discoveries) to the accuracy of the underlying prediction model, as it relies on precise statistical calculations. Specifically, it compares each gene's observed effect scores (calculated by applying the prediction model over the observed mutations in the gene) to its gene-specific background effect score distribution expected at random (calculated by applying the same prediction model over all possible mutations in the gene).
 
-If you use FABRIC in a work contributing to a scientific publication, we ask that you cite our publication:
-Nadav Brandes, Nathan Linial, Michal Linial, Quantifying gene selection in cancer through protein functional alteration bias, Nucleic Acids Research, gkz546, https://doi.org/10.1093/nar/gkz546
+For more details on FABRIC you can refer to our paper `Quantifying gene selection in cancer through protein functional alteration bias <https://doi.org/10.1093/nar/gkz546>`_, published in Nucleic Acids Research (2019).
+
+Or, if you are more a video person, you can watch this talk on YouTube (originally given at ISMB 2020):
+
+.. image:: https://img.youtube.com/vi/GUPmRZiLMUw/0.jpg
+   :target: https://www.youtube.com/watch?v=GUPmRZiLMUw
 
 
 Usage
@@ -191,3 +195,9 @@ Make sure that geneffect and firm are properly installed and configured.
 Clone the project and run:
 
     python setup.py install
+    
+
+Cite us
+=======
+
+If you use FABRIC as part of work contributing to a scientific publication, we ask that you cite our paper: Nadav Brandes, Nathan Linial, Michal Linial, Quantifying gene selection in cancer through protein functional alteration bias, Nucleic Acids Research, gkz546, https://doi.org/10.1093/nar/gkz546

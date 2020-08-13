@@ -7,6 +7,8 @@ The framework relies on a machine-learning prediction model for assessing the fu
 
 Importantly, FABRIC is not sensitive (in terms of false discoveries) to the accuracy of the underlying prediction model, as it relies on precise statistical calculations. Specifically, it compares each gene's observed effect scores (calculated by applying the prediction model over the observed mutations in the gene) to its gene-specific background effect score distribution expected at random (calculated by applying the same prediction model over all possible mutations in the gene).
 
+To see how the results of FABRIC look like, you can explore `The FABRIC Cancer Portal <http://fabric-cancer.huji.ac.il/>`_, a catalouge of FABRIC's summary statistics across the entire human coding genome (~18,000 protein-coding genes) and across all 33 `TCGA <https://portal.gdc.cancer.gov/>`_ cancer types and pan-cancer. 
+
 For more details on FABRIC you can refer to our paper `Quantifying gene selection in cancer through protein functional alteration bias <https://doi.org/10.1093/nar/gkz546>`_, published in Nucleic Acids Research (2019).
 
 Or, if you are more a video person, you can watch this talk on YouTube (originally given at ISMB 2020):

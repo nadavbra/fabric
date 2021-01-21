@@ -1,0 +1,39 @@
+#! /usr/bin/env python3
+
+import os
+import gzip
+import argparse
+
+from fabric.util import log
+from fabric.common_args import get_parser_file_type
+from fabric.vcf_processing import extract_variants
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description = 'Converts a VCF file into a CSV with the list of variants (losing individual-level data if it exists).')
+    parser.add_argument('--vcf-file', dest = 'vcf_file', metavar = '/path/to/file.vcf[.gz]', type = get_parser_file_type(parser, must_exist = True), \
+            required = True, help = 'Path to the input VCF file to convert.')
+    parser.add_argument('--output-csv-file', dest = 'output_csv_file', metavar = '/path/to/output.csv', type = get_parser_file_type(parser), \
+            required = True, help = 'Path to the CSV output file where the parsed variants will be saved.')
+    parser.add_argument('--only-pass', dest = 'only_pass', action = 'store_true', help = 'Filter out variants with any FILTER different from "PASS".')
+    parser.add_argument('--min-AF', dest = 'min_AF', metavar = '<0-1>', type = float, default = 0, help = 'Keep only variants in the VCF with an Allele Frequency (AF) that ' + \
+            'is greater or equal to this number. Default is 0 (i.e. no filter).')
+    parser.add_argument('--override', dest = 'override', action = 'store_true', help = 'Override the output file if it already exists.')
+    args = parser.parse_args()
+        
+    if not args.override and os.path.exists(args.output_csv_file):
+        parser.error('Output file already exists: %s. Use the --override flag if you want to override it.' % args.output_csv_file)
+        
+    vcf_open_function = gzip.open if args.vcf_file.endswith('.gz') else open
+
+    with vcf_open_function(args.vcf_file, 'rt') as f:
+        log('Parsing the VCF...')
+        variants, n_filtered_variants = extract_variants(f, only_pass = args.only_pass, min_AF = args.min_AF)
+    
+    log('Parsed %d variants and filtered out %d variants.' % (len(variants), sum(n_filtered_variants.values())))
+        
+    if sum(n_filtered_variants.values()) > 0:
+        log('Variants were fileterd out for the following reason: %s' % ', '.join(['%s (%d variants)' % (reason, count) for reason, count in n_filtered_variants.items()]))
+        
+    variants.to_csv(args.output_csv_file, index = False)    
+    log('Done.')

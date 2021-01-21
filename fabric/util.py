@@ -1,13 +1,10 @@
-from __future__ import absolute_import, division, print_function
-
 import sys
 import os
 from datetime import datetime
-from collections import Counter
 
 import numpy as np
-
-from geneffect.util import as_biopython_seq
+import pandas as pd
+from statsmodels.stats.multitest import multipletests
 
 
 ### Constants ###
@@ -18,42 +15,20 @@ ALL_NTS_SET = set(ALL_NTS_LIST)
 
 ### Project Functions ###
 
-def log(message):
-    print('FABRIC|PID-%s [%s]: %s' % (os.getpid(), datetime.now(), message))
+def log(message, end = '\n'):
+    print('FABRIC|PID-%s [%s]: %s' % (os.getpid(), datetime.now(), message), end = end)
     sys.stdout.flush()
-
     
-### General Helper Classes ###
-
-class TimeMeasure(object):
     
-    def __init__(self, opening_statement):
-        self.opening_statement = opening_statement
-        
-    def __enter__(self):
-        self.start_time = datetime.now()
-        log(self.opening_statement)
-        
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        self.finish_time = datetime.now()
-        self.elapsed_time = self.finish_time - self.start_time
-        log('Finished after %s.' % self.elapsed_time)
-        
-        
-### Numpy Helper Functions ###
-
-def get_arrays_diff(array1, array2):
-    return np.array([value for value, count in (Counter(array1) - Counter(array2)).items() for _ in range(count)])
-
-
-### Biopython Helper Functions ###
-
-def get_strand_sequence(seq, strand):
+### Statistics ###
     
-    seq = as_biopython_seq(seq)
+def multipletests_with_nulls(values, method = 'fdr_bh'):
     
-    if strand == '+':
-        return seq
-    else:
-        return seq.reverse_complement()
+    significance = np.full(len(values), False, dtype = bool)
+    qvals = np.full(len(values), np.nan, dtype = float)
+    mask = pd.notnull(values)
     
+    if mask.any():
+        significance[np.array(mask)], qvals[np.array(mask)], _, _ = multipletests(values[mask], method = method)
+    
+    return significance, qvals

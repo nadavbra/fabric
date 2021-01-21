@@ -1,5 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
 from setuptools import setup
         
 def readme():
@@ -8,7 +6,7 @@ def readme():
 
 setup(
     name = 'fabric',
-    version = '1.1.0',
+    version = '1.2.0',
     description = 'FABRIC (Functional Alteration Bias Recovery In Coding-regions) is a framework for detecting genes showing functional alteration bias.',
     long_description = readme(),
     url = 'https://github.com/nadavbra/fabric',
@@ -17,20 +15,13 @@ setup(
     license = 'MIT',
     packages = ['fabric'],
     scripts = [
-        'bin/analyze_maf_genes',
-        'bin/analyze_vcf_genes',
-        'bin/create_vcf_dataset',
-        'bin/set_gene_bg_scores',
-        'bin/set_maf_gene_effect_scores',
+        'bin/fabric',
+        'bin/vcf_to_csv',
     ],
     install_requires = [
         'numpy',
         'scipy',
         'pandas',
-        'biopython',
-        'scikit-learn',
         'statsmodels',
-        'geneffect', # https://github.com/nadavbra/geneffect
-        'firm', # https://github.com/nadavbra/firm
     ],
 )

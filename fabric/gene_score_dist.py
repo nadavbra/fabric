@@ -1,19 +1,10 @@
-from __future__ import absolute_import, division, print_function
-
 import numpy as np
-import pandas as pd
 from scipy.stats import rv_discrete
-
-from .util import ALL_NTS_LIST
 
 def get_gene_score_distribution(gene_score_model, nt_substitution_counts):
     nt_substitution_freqs = nt_substitution_counts / nt_substitution_counts.sum().sum()
     return GeneScoreDistribution(gene_score_model, nt_substitution_freqs)
     
-def create_empty_nt_substitution_matrix():
-    N_NTS = len(ALL_NTS_LIST)
-    return pd.DataFrame(np.zeros((N_NTS, N_NTS)), index = ALL_NTS_LIST, columns = ALL_NTS_LIST)
-
 class GeneScoreDistribution(object):
 
     def __init__(self, gene_score_model, substitution_freqs_matrix):
@@ -89,15 +80,19 @@ class GeneScoreDistribution(object):
     
 class GeneScoreModel(object):
 
-    def __init__(self, data):
+    def __init__(self, variants_df):
         self.substitution_score_distributions = {}
-        self._parse_data(data)
+        self._parse_data(variants_df)
     
-    def _parse_data(self, data):
-        for substitution_data in data:
-            self.substitution_score_distributions[(substitution_data['ref_nt'], substitution_data['alt_nt'])] = SubstitutionScoreDistribution(\
-                    substitution_data['n_total'], substitution_data['n_synonymous'], substitution_data['n_nonsense'], \
-                    substitution_data['n_missense'], substitution_data['missense_scores'])
+    def _parse_data(self, variants_df):
+        for (ref, alt), substitution_variants in variants_df.groupby(['ref', 'alt']):
+            n_total = len(substitution_variants)
+            n_synonymous = (substitution_variants['effect_type'] == 'synonymous').sum()
+            n_nonsense = (substitution_variants['effect_type'] == 'nonsense').sum()
+            n_missense = (substitution_variants['effect_type'] == 'missense').sum()
+            missense_scores = substitution_variants.loc[substitution_variants['effect_type'] == 'missense', 'effect_score'].values
+            self.substitution_score_distributions[(ref, alt)] = SubstitutionScoreDistribution(n_total, n_synonymous, n_nonsense, \
+                    n_missense, missense_scores)
 
 class SubstitutionScoreDistribution(object):
 

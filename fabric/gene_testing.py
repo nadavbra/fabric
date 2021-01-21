@@ -1,30 +1,35 @@
-from __future__ import absolute_import, division, print_function
-
 import numpy as np
 import pandas as pd
 from scipy.stats import chisquare
 
-def test_gene(cds_len, observed_scores, overall_bg_score_dist, missense_bg_score_dist):
+def test_gene(cds_len, observed_effects, overall_bg_score_dist, missense_bg_score_dist):
     
-    n_obs = len(observed_scores)
+    n_obs = len(observed_effects)
     mutations_per_nt = n_obs / cds_len
-    meta_results = pd.Series([n_obs, cds_len, mutations_per_nt], index = ['n_obs', 'cds_len', 'mutations_per_nt'])
+    meta_results = pd.Series([n_obs, mutations_per_nt], index = ['n_obs', 'mutations_per_nt'])
+        
+    overall_score_results = test_gene_scores(observed_effects, overall_bg_score_dist, False)
+    missense_score_results = test_gene_scores(observed_effects, missense_bg_score_dist, True)
     
-    overall_score_results = test_gene_scores(observed_scores, overall_bg_score_dist, False)
-    missense_score_results = test_gene_scores(observed_scores, missense_bg_score_dist, True)
-    
-    observed_type_counts = get_type_counts_by_scores(observed_scores)
+    observed_type_counts = observed_effects['effect_type'].value_counts().reindex(['synonymous', 'missense', 'nonsense']).fillna(0).astype(int).values
     expected_type_freqs = overall_bg_score_dist.get_type_freqs()
-    _, types_chi2_pval = chisquare(observed_type_counts, observed_type_counts.sum() * expected_type_freqs)
+    
+    if (expected_type_freqs == 0).any():
+        types_chi2_pval = np.nan
+    else:
+        _, types_chi2_pval = chisquare(observed_type_counts, observed_type_counts.sum() * expected_type_freqs)
+    
     type_results = pd.Series([types_chi2_pval, list(observed_type_counts), list(expected_type_freqs)], \
             index = ['types_chi2_pval', 'observed_type_counts', 'expected_type_freqs'])
     
     return pd.concat([meta_results, overall_score_results, missense_score_results, type_results])
             
-def test_gene_scores(observed_scores, bg_score_dist, only_missense):
+def test_gene_scores(observed_effects, bg_score_dist, only_missense):
     
     if only_missense:
-        observed_scores = observed_scores[(observed_scores > 0) & (observed_scores < 1)]
+        observed_scores = observed_effects.loc[observed_effects['effect_type'] == 'missense', 'effect_score']
+    else:
+        observed_scores = observed_effects['effect_score']
     
     bg_mean = bg_score_dist.mean(only_missense = only_missense)
     bg_std = bg_score_dist.std(only_missense = only_missense)
@@ -43,12 +48,6 @@ def test_gene_scores(observed_scores, bg_score_dist, only_missense):
         results.rename(lambda column: 'overall_%s' % column, inplace = True)
             
     return results
-
-def get_type_counts_by_scores(scores):
-    n_synonymous = (scores == 1).sum()
-    n_nonsense = (scores == 0).sum()
-    n_missense = len(scores) - n_synonymous - n_nonsense
-    return np.array([n_synonymous, n_missense, n_nonsense])
 
 def calc_two_tailed_binning_pval(obs_scores, bg_score_dist, only_missense, n_bins = 100):
     

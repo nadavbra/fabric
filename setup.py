@@ -1,14 +1,10 @@
 from setuptools import setup
         
-def readme():
-    with open('README.rst', 'r') as f:
-        return f.read()
-
 setup(
-    name = 'fabric',
+    name = 'fabric-genetics',
     version = '1.2.0',
     description = 'FABRIC (Functional Alteration Bias Recovery In Coding-regions) is a framework for detecting genes showing functional alteration bias.',
-    long_description = readme(),
+    long_description = 'See: https://github.com/nadavbra/fabric',
     url = 'https://github.com/nadavbra/fabric',
     author = 'Nadav Brandes',
     author_email  ='nadav.brandes@mail.huji.ac.il',

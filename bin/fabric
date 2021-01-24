@@ -63,7 +63,7 @@ if __name__ == '__main__':
             'provided, FABRIC will also run a combined analysis of all the variants together. If this flag is provided, FABRIC will skip that combined analysis.')
     parser.add_argument('--analyze-diff', dest = 'analyze_diff', action = 'store_true', help = 'Also analyze the difference in alteration bias among ' + \
             'projects, resulting additional output columns with the results of this analysis.')
-    parser.add_argument('--only-gene-indices', dest = 'only_gene_indices', metavar = '[<index1>, <index2>, ...]', nargs = '+', type = int, required = False, \
+    parser.add_argument('--only-gene-indices', dest = 'only_gene_indices', metavar = '<index>', nargs = '+', type = int, required = False, \
             help = 'Limit the analysis only to the provided genes (identified by their index). If not provided, will analyze all relevant genes (for which there is at ' + \
             'least one input variant with a possible variant effect).')
     parser.add_argument('--input-variants-tab-delimiter', dest = 'input_variants_tab_delimiter', action = 'store_true',  help = 'By default, --input-variants-file is assumed ' + \
@@ -136,7 +136,7 @@ if __name__ == '__main__':
     if 'cds_len' in genes.columns:
         log('Warning: overriding the "cds_len" column in the genes table with those derived from the possible variant effects.')
     
-    log('Calculating the length of the genes based on the list of possible variants...')
+    log('Calculating the lengths of the genes based on the list of possible variants...')
     genes['cds_len'] = calculate_gene_cds_lens(possible_effects).reindex(genes.index)
         
     log('Mapping the input variants (identified by the columns %s) against the possible variant effects (identified by the columns %s)...' % \

@@ -3,7 +3,7 @@ What is FABRIC?
 
 FABRIC (Functional Alteration Bias Recovery In Coding-regions) is a framework for detecting genes showing functional alteration bias in some evolutionary context. For example, in the context of cancer genomics it can be used to detect alteration promoting genes (namely genes affected by mutations that are significantly more harmful than expected at random). Cancer alteration promoting genes are strong candidates for cancer driver genes. Likewise, in the context of population genetic variation it can be used to detect alteration rejecting genes (namely genes affected by variants that are significantly less harmful than expected at random). Such genes are likely the product of negative selection, and are expected to harbor important functions.
 
-The framework relies on a machine-learning prediction model for assessing the functional impact of genetic variants. All the examples shown here are based specifically on FIRM (https://github.com/nadavbra/firm), a specific prediction model designed exactly for that task, but FABRIC can use any other model. Note that while in FIRM a score of 0 indicates a harmless mutation and a score of 1 indicates a harmful mutation, in FABRIC it is the other way around.
+The framework relies on a machine-learning prediction model for assessing the functional impact of genetic variants. All the examples shown here are based specifically on `FIRM <https://github.com/nadavbra/firm>`_, a specific prediction model designed exactly for that task, but FABRIC can use any other model. Note that while in FIRM a score of 0 indicates a harmless mutation and a score of 1 indicates a harmful mutation, in FABRIC it is the other way around.
 
 Importantly, FABRIC is not sensitive (in terms of false discoveries) to the accuracy of the underlying prediction model, as it relies on precise statistical calculations. Specifically, it compares each gene's observed effect scores (calculated by applying the prediction model over the observed mutations in the gene) to its gene-specific background effect score distribution expected at random (calculated by applying the same prediction model over all possible mutations in the gene).
 
@@ -20,13 +20,16 @@ Or, if you are more a video person, you can watch this talk on YouTube (original
 Installation
 ============
 
+FABRIC is a pure Python3 package.
+
 To install FABRIC, simply run:
 
 .. code-block:: sh
 
    pip install fabric-genetics
    
-FABRIC is a lightweight, pure-Python3 package. It requires the following common packages:
+FABRIC requires (and will atomatically isntall) the following common packages:
+
 * numpy
 * scipy
 * pandas
@@ -36,13 +39,14 @@ FABRIC is a lightweight, pure-Python3 package. It requires the following common 
 Usage
 =====
 
-If you want to analyze your own list of variants/mutations using FABRIC (to quantify the bias of affected genes towards more or less functional damage), simple run:
+If you want to analyze your own list of variants/mutations with FABRIC (to quantify the bias of affected genes towards more or less functional damage), simple run:
 
 .. code-block:: sh
 
    fabric --input-variants-file=your_variant_list.csv --possible-variant-effects-file=all_cds_snp_effects_GRCh38(|hg19).csv --genes-file=genes_GRCh38(|hg19).csv --output-file=fabric_output.csv
    
-The files all_cds_snp_effects_GRCh38.csv and genes_GRCh38.csv (or the equivalent files for version hg19 of the human reference genome) can be obtained from ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/ (you can also create them from scratch using FIRM, but that is a long process). Make sure that you are using the files matching the same version of the human reference genome as your list of variants (provided by the --input-variants-file argument). If you wish to use the effect scores of a tool other than FIRM, the arguments --possible-variant-effects-file and --genes-file can accept any CSV files at the right format (more on that later).
+The files :code:`all_cds_snp_effects_GRCh38.csv` and :code:`genes_GRCh38.csv` (or the equivalent files for version *hg19* of the human reference genome) can be obtained from `ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/ <ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/>`_ (you can also create them from scratch using `FIRM <https://github.com/nadavbra/firm>`_'s :code:`firm_list_all_possible_cds_snps` command, but that is a long process).
+Make sure that you are using the files matching the version of the reference genome that is relevant for your list of variants (provided by the :code:`--input-variants-file` argument). If you wish to use the effect scores of a tool other than FIRM, the arguments :code:`--possible-variant-effects-file` and :code:`--genes-file` can accept any CSV files, provided that they are at the right format (more on that in the "Using other effect scores" section).
 
 The CSV file provided by --input-variants-file can list any set of independent variants (one in each row). Each variant is recognized by chromosome, position and reference and alternative DNA sequences. By default, FABRIC expect the following column names in the input CSV: chrom, pos, ref and alt. However, you can specify any othr column names using the arguments --chrom-column, --pos-column, --ref-column and --alt-column. Other columns in the input CSV file are simply ignored. Use the flag --input-variants-tab-delimiter if the input CSV file is separated by tabs rather than commas. 
 
@@ -102,6 +106,10 @@ After you have convereted the data into CSV format, you can run FABRIC over this
    fabric --input-variants-file=exac_variants.csv --possible-variant-effects-file=all_cds_snp_effects_hg19.csv --genes-file=genes_hg19.csv --output-file=exac_fabric_results.csv
    
 Recall that the files all_cds_snp_effects_hg19.csv and genes_hg19.csv can be taken from ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/.
+
+
+Using other effect scores
+=====
     
 
 Cite us

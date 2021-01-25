@@ -76,7 +76,7 @@ To analyze these mutations through a combined (pan-cancer) analysis, simply run:
 
    fabric --input-variants-file=gdc_combined.maf --possible-variant-effects-file=all_cds_snp_effects_GRCh38.csv --genes-file=genes_GRCh38.csv --output-file=gdc_pan_cancer_fabric_results.csv --input-variants-tab-delimiter --chrom-column=Chromosome --pos-column=Start_Position --ref-column=Tumor_Seq_Allele1 --alt-column=Tumor_Seq_Allele2
    
-Recall that the files all_cds_snp_effects_GRCh38.csv and genes_GRCh38.csv can be taken from ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/.
+Recall that the files :code:`all_cds_snp_effects_GRCh38.csv` and :code:`genes_GRCh38.csv` can be taken from *ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/*.
    
 If you want to also include a separate analysis for each of the 33 cancer types, run instead:
 
@@ -84,7 +84,7 @@ If you want to also include a separate analysis for each of the 33 cancer types,
 
    fabric --input-variants-file=gdc_combined.maf --possible-variant-effects-file=all_cds_snp_effects_GRCh38.csv --genes-file=genes_GRCh38.csv --output-dir=gdc_fabric_results --analyze-by-project-column=tcga_project --analyze-diff --input-variants-tab-delimiter --chrom-column=Chromosome --pos-column=Start_Position --ref-column=Tumor_Seq_Allele1 --alt-column=Tumor_Seq_Allele2
    
-Since this is going to analyze 33 TCGA projects independently, it's going to take a long time to run, so it's recommended to run it with nohup or a similar tool.
+Since this is going to analyze 33 TCGA projects independently, it's going to take a long time to run, so it's recommended to run it with :code:`nohup` or a similar tool.
 
 
 Example 2: Analyzing genetic variants in the healthy human population from ExAC

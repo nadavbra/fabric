@@ -87,27 +87,26 @@ If you want to also include a separate analysis for each of the 33 cancer types,
 Since this is going to analyze 33 TCGA projects independently, it's going to take a long time to run, so it's recommended to run it with :code:`nohup` or a similar tool.
 
 
-Example 2: Analyzing genetic variants in the healthy human population from ExAC
+Example 2: Analyzing variants in the healthy human population from ExAC
 -----------
 
-In this example, we will analyze ~9M variants sequenced from the exomes of ~60K individuals obtained from ExAC (http://exac.broadinstitute.org/). The file is available at:
-ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/ExAC.r1.sites.vep.vcf.gz.
+In this example, we will analyze ~9M variants sequenced from the exomes of ~60K individuals obtained from `ExAC/gnomAD <https://gnomad.broadinstitute.org/>`_. The VCF file we are going to analyze is available at: *ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/ExAC.r1.sites.vep.vcf.gz*.
 
-Since this is a VCF file, we will first need to convert it into CSV using the vcf_to_csv tool installed by FABRIC. Simply run:
+Since this is a VCF file, we will first need to convert it into CSV using the :code:`vcf_to_csv` tool installed by FABRIC. Simply run:
 
 .. code-block:: sh
 
    vcf_to_csv --vcf-file=ExAC.r1.sites.vep.vcf.gz --output-csv-file=exac_variants.csv --only-pass
    
-The --only-pass flag is used to only retrieve variants passing the quality-control filter in the VCF file (i.e. with "PASS" in the FILTER field).
+The :code:`--only-pass` flag is used to only retrieve variants passing the quality-control filter in the VCF file (i.e. with :code:`"PASS"` in the :code:`FILTER` field).
 
-After you have convereted the data into CSV format, you can run FABRIC over this dataset:
+After converting the data into CSV, you can run FABRIC over this dataset:
 
 .. code-block:: sh
 
    fabric --input-variants-file=exac_variants.csv --possible-variant-effects-file=all_cds_snp_effects_hg19.csv --genes-file=genes_hg19.csv --output-file=exac_fabric_results.csv
    
-Recall that the files all_cds_snp_effects_hg19.csv and genes_hg19.csv can be taken from ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/.
+Recall that the files :code:`all_cds_snp_effects_hg19.csv` and :code:`genes_hg19.csv` can be taken from *ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/*.
 
 
 Using other effect scores

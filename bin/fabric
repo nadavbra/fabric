@@ -116,6 +116,7 @@ if __name__ == '__main__':
     log('Loading input variants...')
     input_variants = pd.read_csv(args.input_variants_file, delimiter = '\t' if args.input_variants_tab_delimiter else ',', usecols = input_variants_relevant_columns,
             dtype = {args.chrom_column: str}, engine = 'python')
+    assert input_variants.notnull().all().all(), 'Input variants have missing values.'
     input_variants[args.chrom_column] = input_variants[args.chrom_column].apply(parse_chrom)
     log('Loaded %d input variants.' % len(input_variants))
     

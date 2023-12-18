@@ -45,7 +45,7 @@ If you want to analyze your own list of variants/mutations with FABRIC (to quant
 
    fabric --input-variants-file=your_variant_list.csv --possible-variant-effects-file=all_cds_snp_effects_GRCh38(|hg19).csv --genes-file=genes_GRCh38(|hg19).csv --output-file=fabric_output.csv
    
-The files :code:`all_cds_snp_effects_GRCh38.csv` and :code:`genes_GRCh38.csv` (or the equivalent files for version *hg19* of the human reference genome) can be obtained from *ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/* (you can also create them from scratch using `FIRM <https://github.com/nadavbra/firm>`_'s :code:`firm_list_all_possible_cds_snps` command, but that is a long process).
+The files :code:`all_cds_snp_effects_GRCh38.csv` and :code:`genes_GRCh38.csv` (or the equivalent files for version *hg19* of the human reference genome) can be obtained from *https://github.com/nadavbra/firm_processed_files* (you can also create them from scratch using `FIRM <https://github.com/nadavbra/firm>`_'s :code:`firm_list_all_possible_cds_snps` command, but that is a long process).
 Make sure that you are using the files matching the version of the reference genome that is relevant for your list of variants (provided by the :code:`--input-variants-file` argument). If you wish to use the effect scores of a tool other than FIRM, the arguments :code:`--possible-variant-effects-file` and :code:`--genes-file` can accept any CSV files, provided that they are at the right format (more on that in the "Using other effect scores" section).
 
 The CSV file provided by :code:`--input-variants-file` can list any set of independent variants (one in each row). Each variant is recognized by its locus (chromosome & position) and the reference & alternative DNA sequences. By default, FABRIC expects the following column names in the input CSV: *chrom*, *pos*, *ref* & *alt*. However, you can specify any othr column names by using the arguments :code:`--chrom-column`, :code:`--pos-column`, :code:`--ref-column` and :code:`--alt-column`. Other columns in the input CSV file are simply ignored. Use the flag :code:`--input-variants-tab-delimiter:code:` if the input CSV file is separated by tabs rather than commas. 
@@ -76,7 +76,7 @@ To analyze these mutations through a combined (pan-cancer) analysis, simply run:
 
    fabric --input-variants-file=gdc_combined.maf --possible-variant-effects-file=all_cds_snp_effects_GRCh38.csv --genes-file=genes_GRCh38.csv --output-file=gdc_pan_cancer_fabric_results.csv --input-variants-tab-delimiter --chrom-column=Chromosome --pos-column=Start_Position --ref-column=Tumor_Seq_Allele1 --alt-column=Tumor_Seq_Allele2
    
-Recall that the files :code:`all_cds_snp_effects_GRCh38.csv` and :code:`genes_GRCh38.csv` can be taken from *ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/*.
+Recall that the files :code:`all_cds_snp_effects_GRCh38.csv` and :code:`genes_GRCh38.csv` can be taken from *https://github.com/nadavbra/firm_processed_files*.
    
 If you want to also include a separate analysis for each of the 33 cancer types, run instead:
 
@@ -106,7 +106,7 @@ After converting the data into CSV, you can run FABRIC over this dataset:
 
    fabric --input-variants-file=exac_variants.csv --possible-variant-effects-file=all_cds_snp_effects_hg19.csv --genes-file=genes_hg19.csv --output-file=exac_fabric_results.csv
    
-Recall that the files :code:`all_cds_snp_effects_hg19.csv` and :code:`genes_hg19.csv` can be taken from *ftp://ftp.cs.huji.ac.il/users/nadavb/firm_data/*.
+Recall that the files :code:`all_cds_snp_effects_hg19.csv` and :code:`genes_hg19.csv` can be taken from *https://github.com/nadavbra/firm_processed_files*.
 
 
 Using other effect scores
